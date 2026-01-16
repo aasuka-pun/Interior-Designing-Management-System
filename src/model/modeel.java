@@ -16,6 +16,7 @@ public class modeel {
     private String itemName;
     private double itemPrice;
     private String itemCategory;
+    
 
     // Empty constructor
     public modeel() {}

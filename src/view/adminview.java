@@ -1,3 +1,4 @@
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
@@ -8,32 +9,42 @@ import control.InteriorController;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import model.modeel;
-
+import view.adminlogin;
+import view.UserView;
+import control.ItemStore;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
  * @author Acer
  */
 public class adminview extends javax.swing.JFrame {
-      InteriorController controller = new InteriorController();
+      
+      InteriorController controller = ItemStore.getController();
+
     DefaultTableModel model;
       
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(adminview.class.getName());
-
+    
     /**
      * Creates new form adminview
      */
     public adminview() {
-        initComponents();
-        model = (DefaultTableModel) jTable1.getModel();
-        controller = new InteriorController();
-        model = (DefaultTableModel) jTable1.getModel();
-     
-        
+    initComponents();
+    model = (DefaultTableModel) jTable1.getModel();
+
+    // ✅ Only use shared controller
+    controller = ItemStore.getController();
+
+    // Load the table with current items
+    loadTableData();
+}
+
     
-        
-    }
+    
+    
    
 
     
@@ -69,10 +80,14 @@ public class adminview extends javax.swing.JFrame {
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
+        jButton6 = new javax.swing.JButton();
+        jButton7 = new javax.swing.JButton();
+        jButton8 = new javax.swing.JButton();
+        jButton9 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jPanel1.setBackground(new java.awt.Color(0, 0, 0));
+        jPanel1.setBackground(new java.awt.Color(0, 102, 102));
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -85,6 +100,11 @@ public class adminview extends javax.swing.JFrame {
                 "Item ID", "Item Name", "Item Price", "Item Category"
             }
         ));
+        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable1MouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(jTable1);
 
         jPanel2.setBackground(new java.awt.Color(255, 204, 204));
@@ -99,6 +119,11 @@ public class adminview extends javax.swing.JFrame {
         jButton1.setBackground(new java.awt.Color(204, 204, 255));
         jButton1.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
         jButton1.setText("Search");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -109,11 +134,11 @@ public class adminview extends javax.swing.JFrame {
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 264, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 82, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 112, Short.MAX_VALUE)
+                .addGap(43, 43, 43)
                 .addComponent(jButton1)
                 .addContainerGap())
         );
@@ -128,7 +153,7 @@ public class adminview extends javax.swing.JFrame {
                             .addComponent(jLabel3)
                             .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jButton1))
-                        .addGap(0, 6, Short.MAX_VALUE))
+                        .addGap(0, 15, Short.MAX_VALUE))
                     .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -190,20 +215,69 @@ public class adminview extends javax.swing.JFrame {
             }
         });
 
+        jButton6.setText("Go To DashBoard");
+        jButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton6ActionPerformed(evt);
+            }
+        });
+
+        jButton7.setText("Sort By ID");
+        jButton7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton7ActionPerformed(evt);
+            }
+        });
+
+        jButton8.setText("Sort By Name");
+        jButton8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton8ActionPerformed(evt);
+            }
+        });
+
+        jButton9.setText("Sort By Price");
+        jButton9.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton9ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(12, 12, 12)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 398, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 398, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(jButton7)
+                        .addGap(36, 36, 36)
+                        .addComponent(jButton8, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton9)))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jButton2)
+                        .addGap(27, 27, 27)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(jButton6))
+                            .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton4)
+                        .addContainerGap())
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton5)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(jTextField5, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGroup(jPanel1Layout.createSequentialGroup()
@@ -215,32 +289,21 @@ public class adminview extends javax.swing.JFrame {
                                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                         .addComponent(jTextField2, javax.swing.GroupLayout.DEFAULT_SIZE, 180, Short.MAX_VALUE)
                                         .addComponent(jTextField3)
-                                        .addComponent(jTextField4))))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jButton2)
-                                .addGap(18, 18, 18)
-                                .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, 87, Short.MAX_VALUE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jButton4)))
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton5)
-                        .addGap(0, 0, Short.MAX_VALUE))))
+                                        .addComponent(jTextField4)))))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(8, Short.MAX_VALUE))
+                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+            .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(35, 35, 35)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(9, 9, 9)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jButton5))
@@ -264,9 +327,19 @@ public class adminview extends javax.swing.JFrame {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jButton2)
                             .addComponent(jButton3)
-                            .addComponent(jButton4)))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 278, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(47, Short.MAX_VALUE))
+                            .addComponent(jButton4))
+                        .addGap(18, 18, 18)
+                        .addComponent(jButton6)
+                        .addContainerGap(44, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jButton7)
+                            .addComponent(jButton8)
+                            .addComponent(jButton9))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 278, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(14, 14, 14))))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -286,234 +359,189 @@ public class adminview extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-  
-      if (jTextField2.getText().trim().isEmpty()) {
-        JOptionPane.showMessageDialog(this, "Item ID must be filled", "Input Error", JOptionPane.ERROR_MESSAGE);
-        jTextField2.requestFocus();
-        return;
-    }
-    if (jTextField3.getText().trim().isEmpty()) {
-        JOptionPane.showMessageDialog(this, "Item Name must be filled", "Input Error", JOptionPane.ERROR_MESSAGE);
-        jTextField3.requestFocus();
-        return;
-    }
-    if (jTextField4.getText().trim().isEmpty()) {
-        JOptionPane.showMessageDialog(this, "Item Price must be filled", "Input Error", JOptionPane.ERROR_MESSAGE);
-        jTextField4.requestFocus();
-        return;
-    }
-    if (jTextField5.getText().trim().isEmpty()) {
-        JOptionPane.showMessageDialog(this, "Item Category must be filled", "Input Error", JOptionPane.ERROR_MESSAGE);
-        jTextField5.requestFocus();
+   int row = jTable1.getSelectedRow();
+    if (row == -1) {
+        JOptionPane.showMessageDialog(this, "Please select an item to update");
         return;
     }
 
-    // --- Existing Update logic ---
-    String idText = jTextField2.getText().trim();
+    // 1️⃣ Read input
+    String itemId = jTextField2.getText().trim();
     String name = jTextField3.getText().trim();
     String priceText = jTextField4.getText().trim();
     String category = jTextField5.getText().trim();
 
-    int id = 0;
-    double price = 0;
-
-    try {
-        id = Integer.parseInt(idText);
-    } catch (NumberFormatException e) {
-        JOptionPane.showMessageDialog(this, "ID must be a number", "Input Error", JOptionPane.ERROR_MESSAGE);
+    if (itemId.isEmpty() || name.isEmpty() || priceText.isEmpty() || category.isEmpty()) {
+        JOptionPane.showMessageDialog(this, "All fields are required");
         return;
     }
 
+    double price;
     try {
         price = Double.parseDouble(priceText);
     } catch (NumberFormatException e) {
-        JOptionPane.showMessageDialog(this, "Price must be a number", "Input Error", JOptionPane.ERROR_MESSAGE);
+        JOptionPane.showMessageDialog(this, "Price must be a number");
         return;
     }
 
-    boolean found = false;
-    for (int i = 0; i < model.getRowCount(); i++) {
-        Object tableIdObj = model.getValueAt(i, 0);
-        if (tableIdObj == null) continue;
+    // 2️⃣ Update via controller
+    controller.updateItem(row, new modeel(itemId, name, price, category));
 
-        int tableId;
-        try {
-            tableId = Integer.parseInt(tableIdObj.toString().trim());
-        } catch (NumberFormatException ex) {
-            continue;
-        }
+    // 3️⃣ Refresh tables
+    loadTableData();
+    loadUserTableData();
 
-        if (tableId == id) {
-            model.setValueAt(name, i, 1);
-            model.setValueAt(price, i, 2);
-            model.setValueAt(category, i, 3);
-            found = true;
-            break;
-        }
-    }
-
-    if (found) {
-        JOptionPane.showMessageDialog(this, "Item updated successfully");
-        jTextField2.setText("");
-        jTextField3.setText("");
-        jTextField4.setText("");
-        jTextField5.setText("");
-    } else {
-        JOptionPane.showMessageDialog(this, "No item found with the given ID.", "Error", JOptionPane.ERROR_MESSAGE);
-    }
-    
-             
-    }//GEN-LAST:event_jButton2ActionPerformed
-
-    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton5ActionPerformed
-
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-     if (jTextField2.getText().trim().isEmpty()) {
-        JOptionPane.showMessageDialog(this, "Item ID must be filled", "Input Error", JOptionPane.ERROR_MESSAGE);
-        jTextField2.requestFocus();
-        return;
-    }
-    if (jTextField3.getText().trim().isEmpty()) {
-        JOptionPane.showMessageDialog(this, "Item Name must be filled", "Input Error", JOptionPane.ERROR_MESSAGE);
-        jTextField3.requestFocus();
-        return;
-    }
-    if (jTextField4.getText().trim().isEmpty()) {
-        JOptionPane.showMessageDialog(this, "Item Price must be filled", "Input Error", JOptionPane.ERROR_MESSAGE);
-        jTextField4.requestFocus();
-        return;
-    }
-    if (jTextField5.getText().trim().isEmpty()) {
-        JOptionPane.showMessageDialog(this, "Item Category must be filled", "Input Error", JOptionPane.ERROR_MESSAGE);
-        jTextField5.requestFocus();
-        return;
-    }
-
-    // --- Existing Add logic ---
-    String idText = jTextField2.getText();
-    String name = jTextField3.getText();
-    String priceText = jTextField4.getText();
-    String category = jTextField5.getText();
-
-    int id = 0;
-    double price = 0;
-
-    try {
-        id = Integer.parseInt(idText);
-    } catch (NumberFormatException e) {
-        JOptionPane.showMessageDialog(this, "ID must be a number", "Input Error", JOptionPane.ERROR_MESSAGE);
-        return;
-    }
-
-    try {
-        price = Double.parseDouble(priceText);
-    } catch (NumberFormatException e) {
-        JOptionPane.showMessageDialog(this, "Price must be a number", "Input Error", JOptionPane.ERROR_MESSAGE);
-        return;
-    }
-
-    model.insertRow(0, new Object[]{id, name, price, category});
-    JOptionPane.showMessageDialog(this, "Item added successfully");
-
+    // 4️⃣ Clear fields
     jTextField2.setText("");
     jTextField3.setText("");
     jTextField4.setText("");
     jTextField5.setText("");
-    }//GEN-LAST:event_jButton3ActionPerformed
 
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-if (jTextField2.getText().trim().isEmpty()) {
-        JOptionPane.showMessageDialog(this, "Item ID must be filled", "Input Error", JOptionPane.ERROR_MESSAGE);
-        jTextField2.requestFocus();
-        return;
-    }
-    if (jTextField3.getText().trim().isEmpty()) {
-        JOptionPane.showMessageDialog(this, "Item Name must be filled", "Input Error", JOptionPane.ERROR_MESSAGE);
-        jTextField3.requestFocus();
-        return;
-    }
-    if (jTextField4.getText().trim().isEmpty()) {
-        JOptionPane.showMessageDialog(this, "Item Price must be filled", "Input Error", JOptionPane.ERROR_MESSAGE);
-        jTextField4.requestFocus();
-        return;
-    }
-    if (jTextField5.getText().trim().isEmpty()) {
-        JOptionPane.showMessageDialog(this, "Item Category must be filled", "Input Error", JOptionPane.ERROR_MESSAGE);
-        jTextField5.requestFocus();
-        return;
-    }
+    // 5️⃣ Message
+    JOptionPane.showMessageDialog(this, "Item updated successfully");
 
-    // --- Existing Delete logic ---
+             
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        adminlogin loginPage = new adminlogin();
+    loginPage.setVisible(true);
+    
+    // Close the dashboard
+    this.dispose();  
+    }//GEN-LAST:event_jButton5ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+     
+      // 1️⃣ Get input
     String idText = jTextField2.getText().trim();
     String name = jTextField3.getText().trim();
     String priceText = jTextField4.getText().trim();
     String category = jTextField5.getText().trim();
 
-    int id = 0;
-    double price = 0;
+    // 2️⃣ Validate empty fields
+    if (idText.isEmpty() || name.isEmpty() || priceText.isEmpty() || category.isEmpty()) {
+        JOptionPane.showMessageDialog(this, "All fields are required");
+        return;
+    }
 
+    int id;
+    double price;
+
+    // 3️⃣ Validate ID is integer
     try {
         id = Integer.parseInt(idText);
     } catch (NumberFormatException e) {
-        JOptionPane.showMessageDialog(this, "ID must be a number", "Input Error", JOptionPane.ERROR_MESSAGE);
+        JOptionPane.showMessageDialog(this, "ID must be an integer");
         return;
     }
 
+    // 4️⃣ Validate price is a number
     try {
         price = Double.parseDouble(priceText);
     } catch (NumberFormatException e) {
-        JOptionPane.showMessageDialog(this, "Price must be a number", "Input Error", JOptionPane.ERROR_MESSAGE);
+        JOptionPane.showMessageDialog(this, "Price must be a number");
         return;
     }
 
-    boolean found = false;
-    for (int i = 0; i < model.getRowCount(); i++) {
-        Object tableIdObj = model.getValueAt(i, 0);
-        Object tableNameObj = model.getValueAt(i, 1);
-        Object tablePriceObj = model.getValueAt(i, 2);
-        Object tableCategoryObj = model.getValueAt(i, 3);
-
-        if (tableIdObj == null || tableNameObj == null || tablePriceObj == null || tableCategoryObj == null)
-            continue;
-
-        int tableId;
-        double tablePrice;
+    // 5️⃣ Check for duplicate ID
+    boolean exists = false;
+    for (modeel item : ItemStore.getController().getAllItems()) {
         try {
-            tableId = Integer.parseInt(tableIdObj.toString().trim());
-            tablePrice = Double.parseDouble(tablePriceObj.toString().trim());
+            if (Integer.parseInt(item.getItemId()) == id) {
+                exists = true;
+                break;
+            }
         } catch (NumberFormatException ex) {
-            continue;
-        }
-
-        String tableName = tableNameObj.toString().trim();
-        String tableCategory = tableCategoryObj.toString().trim();
-
-        if (tableId == id &&
-            tableName.equalsIgnoreCase(name) &&
-            Math.abs(tablePrice - price) < 0.001 &&
-            tableCategory.equalsIgnoreCase(category)) {
-            
-            model.removeRow(i);
-            found = true;
-            break;
+            // skip invalid IDs in existing data
         }
     }
 
-    if (found) {
-        JOptionPane.showMessageDialog(this, "Item deleted successfully");
-        jTextField2.setText("");
-        jTextField3.setText("");
-        jTextField4.setText("");
-        jTextField5.setText("");
-    } else {
-        JOptionPane.showMessageDialog(this, "No matching item found. Please check your input.", "Error", JOptionPane.ERROR_MESSAGE);
+    if (exists) {
+        JOptionPane.showMessageDialog(this, "ID already exists. Use a unique ID.");
+        return;
     }
-   
+
+    // 6️⃣ Add new item
+    controller.addItem(new modeel(String.valueOf(id), name, price, category));
+
+    // 7️⃣ Refresh tables
+    loadTableData();      // Admin table
+    loadUserTableData();  // User table
+
+    // 8️⃣ Clear input fields
+    jTextField2.setText("");
+    jTextField3.setText("");
+    jTextField4.setText("");
+    jTextField5.setText("");
+
+    // 9️⃣ Success message
+    JOptionPane.showMessageDialog(this, "Item added successfully");
+
+
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+       
+    int row = jTable1.getSelectedRow();
+    if (row == -1) {
+        JOptionPane.showMessageDialog(this, "Please select an item to delete");
+        return;
+    }
+
+    int confirm = JOptionPane.showConfirmDialog(this,
+        "Are you sure you want to delete this item?",
+        "Confirm Delete",
+        JOptionPane.YES_NO_OPTION
+    );
+
+    if (confirm != JOptionPane.YES_OPTION) return;
+
+    // 1️⃣ Delete via controller
+    controller.deleteItem(row);
+
+    // 2️⃣ Refresh tables
+    loadTableData();
+    loadUserTableData();
+
+    // 3️⃣ Clear input fields
+    jTextField2.setText("");
+    jTextField3.setText("");
+    jTextField4.setText("");
+    jTextField5.setText("");
+
+    // 4️⃣ Message
+    JOptionPane.showMessageDialog(this, "Item deleted successfully");
+
+
     
     
     }//GEN-LAST:event_jButton4ActionPerformed
+   
+  private void loadTableData() {
+    DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+    model.setRowCount(0);
+
+    for (modeel item : controller.getAllItems()) {
+        model.addRow(new Object[]{
+            item.getItemId(),
+            item.getItemName(),
+            item.getItemPrice(),
+            item.getItemCategory()
+        });
+    }
+}
+
+private void tableRowClicked() {
+    int selectedRow = jTable1.getSelectedRow();
+
+    if (selectedRow >= 0) {
+        jTextField2.setText(model.getValueAt(selectedRow, 0).toString());
+        jTextField3.setText(model.getValueAt(selectedRow, 1).toString());
+        jTextField4.setText(model.getValueAt(selectedRow, 2).toString());
+        jTextField5.setText(model.getValueAt(selectedRow, 3).toString());
+    }
+}
 
     private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
         // TODO add your handling code here:
@@ -522,6 +550,162 @@ if (jTextField2.getText().trim().isEmpty()) {
     private void jTextField3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField3ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField3ActionPerformed
+
+    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
+        tableRowClicked();
+
+    }//GEN-LAST:event_jTable1MouseClicked
+
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+        dash dashboard = new dash();
+    dashboard.setVisible(true);
+    
+    // Close the dashboard
+    this.dispose();  
+    }//GEN-LAST:event_jButton6ActionPerformed
+
+    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
+       List<modeel> itemList = ItemStore.getController().getAllItems();
+    
+    // Using your InsertionSort logic adapted for modeel
+    for (int i = 1; i < itemList.size(); i++) {
+        modeel key = itemList.get(i);
+        int j = i - 1;
+        while (j >= 0 && itemList.get(j).getItemId().compareToIgnoreCase(key.getItemId()) > 0) {
+            itemList.set(j + 1, itemList.get(j));
+            j--;
+        }
+        itemList.set(j + 1, key);
+    }
+
+    // Refresh table
+    loadTableData();
+    }//GEN-LAST:event_jButton7ActionPerformed
+
+    private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
+        List<modeel> itemList = ItemStore.getController().getAllItems();
+
+    int n = itemList.size();
+    for (int i = 0; i < n - 1; i++) {
+        int minIndex = i;
+        for (int j = i + 1; j < n; j++) {
+            if (itemList.get(j).getItemName().compareToIgnoreCase(itemList.get(minIndex).getItemName()) < 0) {
+                minIndex = j;
+            }
+        }
+        // Swap
+        modeel temp = itemList.get(i);
+        itemList.set(i, itemList.get(minIndex));
+        itemList.set(minIndex, temp);
+    }
+
+    // Refresh table
+    loadTableData();
+    }//GEN-LAST:event_jButton8ActionPerformed
+
+    private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
+       List<modeel> itemList = ItemStore.getController().getAllItems();
+    mergeSortByPrice(itemList, 0, itemList.size() - 1);
+
+    // Refresh table
+    loadTableData();
+}  
+
+// Merge Sort helper methods for price — MUST BE OUTSIDE ANY OTHER METHOD
+private void mergeSortByPrice(List<modeel> list, int left, int right) {
+    if (left < right) {
+        int mid = (left + right) / 2;
+        mergeSortByPrice(list, left, mid);
+        mergeSortByPrice(list, mid + 1, right);
+        merge(list, left, mid, right); // call merge
+    }
+}
+
+// THIS IS OUTSIDE mergeSortByPrice METHOD
+private void merge(List<modeel> list, int left, int mid, int right) {
+    List<modeel> temp = new ArrayList<>();
+    int i = left, j = mid + 1;
+
+    while (i <= mid && j <= right) {
+        if (list.get(i).getItemPrice() <= list.get(j).getItemPrice()) {
+            temp.add(list.get(i++));
+        } else {
+            temp.add(list.get(j++));
+        }
+    }
+
+    while (i <= mid) temp.add(list.get(i++));
+    while (j <= right) temp.add(list.get(j++));
+
+    for (int k = 0; k < temp.size(); k++) {
+        list.set(left + k, temp.get(k));
+    }
+    }//GEN-LAST:event_jButton9ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        String searchName = jTextField1.getText().trim();
+
+    if (searchName.isEmpty()) {
+        JOptionPane.showMessageDialog(this, "Please enter a name to search");
+        return;
+    }
+
+    // 2️⃣ Get item list
+    List<modeel> itemList = ItemStore.getController().getAllItems();
+
+    // 3️⃣ Search
+    boolean found = false;
+    for (modeel item : itemList) {
+        if (item.getItemName().equalsIgnoreCase(searchName)) {
+            // Match found → show in dialog
+            String message = "Item Found:\n"
+                           + "ID: " + item.getItemId() + "\n"
+                           + "Name: " + item.getItemName() + "\n"
+                           + "Price: " + item.getItemPrice() + "\n"
+                           + "Category: " + item.getItemCategory();
+            JOptionPane.showMessageDialog(this, message, "Search Result", JOptionPane.INFORMATION_MESSAGE);
+            found = true;
+            break;
+        }
+    }
+
+    // 4️⃣ If not found, show message
+    if (!found) {
+        JOptionPane.showMessageDialog(this, "Item with name \"" + searchName + "\" not found", "Search Result", JOptionPane.WARNING_MESSAGE);
+    }
+    }//GEN-LAST:event_jButton1ActionPerformed
+public void refreshTable() {
+    DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+    model.setRowCount(0); // clear table
+
+    for (modeel item : controller.getAllItems()) {
+        model.addRow(new Object[]{
+            item.getItemId(),
+            item.getItemName(),
+            item.getItemPrice(),
+            item.getItemCategory()
+        });
+    }
+}
+private void loadUserTableData() {
+    // Get the table model
+    DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+    
+    // Clear existing rows
+    model.setRowCount(0);
+
+    // Add all items from ItemStore.items
+    for (modeel item : ItemStore.getController().getAllItems()) {
+    Object[] rowData = new Object[] {
+        item.getItemId(),
+        item.getItemName(),
+        item.getItemPrice(),
+        item.getItemCategory()
+    };
+    model.addRow(rowData);
+}
+}
+
 
 
     /**
@@ -555,6 +739,10 @@ if (jTextField2.getText().trim().isEmpty()) {
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
+    private javax.swing.JButton jButton6;
+    private javax.swing.JButton jButton7;
+    private javax.swing.JButton jButton8;
+    private javax.swing.JButton jButton9;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
